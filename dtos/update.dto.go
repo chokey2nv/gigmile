@@ -6,10 +6,10 @@ import (
 )
 
 type UpdateUserResponseDto struct {
-	LastName  string          `json:"lastName" bson:"lastName"`
-	FirstName string          `json:"firstName" bson:"firstName"`
-	UserRole  models.UserRole `json:"userRole" bson:"userRole"`
-	Email     string          `json:"email" bson:"email"`
+	LastName  string          `json:"lastName"`
+	FirstName string          `json:"firstName"`
+	UserRole  models.UserRole `json:"userRole"`
+	Email     string          `json:"email"`
 }
 type UpdateResponseDto struct {
 	Id                       string                 `json:"id"`

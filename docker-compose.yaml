@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  back-end:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - gigmileNetwork
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27018:27017"
+    networks:
+      - gigmileNetwork
+    volumes:
+      - ./mongo-data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root_pass
+
+networks:
+  gigmileNetwork:
+
+volumes:
+  mongo-data:
