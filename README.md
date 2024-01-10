@@ -141,6 +141,10 @@ If you have docker installed in your system, you can simply run this app using
 docker-compose up
 ```
 
+
+**Limitation**
+This backend did ignore some UX logic implementation as there is no consumer yet, eg of such is checking initial sign-ups for existing email before new email is used for signup.
+
 **Sample Flow / Api Calls**
 
 *Sign up*
