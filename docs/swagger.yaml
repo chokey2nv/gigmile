@@ -1,0 +1,519 @@
+basePath: /api/v1
+definitions:
+  dtos.ErrorResponse:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  dtos.GetSprintDto:
+    properties:
+      endDate:
+        type: string
+      name:
+        type: string
+      startDate:
+        type: string
+    type: object
+  dtos.GetTaskDto:
+    properties:
+      pageOption:
+        $ref: '#/definitions/dtos.PageOption'
+    type: object
+  dtos.GetUPdateFilterDto:
+    properties:
+      date:
+        type: string
+      day:
+        type: integer
+      employeeName:
+        description: week/day/sprint/owner
+        type: string
+      sprintName:
+        type: string
+      week:
+        type: integer
+    type: object
+  dtos.GetUpdateDto:
+    properties:
+      filter:
+        $ref: '#/definitions/dtos.GetUPdateFilterDto'
+      pageOption:
+        $ref: '#/definitions/dtos.PageOption'
+    type: object
+  dtos.GetUserDto:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      userRole:
+        type: string
+    type: object
+  dtos.PageOption:
+    properties:
+      limit:
+        type: integer
+      skip:
+        type: integer
+    type: object
+  dtos.Response:
+    properties:
+      data: {}
+    type: object
+  dtos.SignUpDto:
+    properties:
+      user:
+        $ref: '#/definitions/dtos.UserDto'
+    type: object
+  dtos.UpdateDto:
+    properties:
+      blockByEmployeeIds:
+        items:
+          type: string
+        type: array
+      breakaway:
+        type: boolean
+      currentTaskIds:
+        items:
+          type: string
+        type: array
+      previousCompletedTaskIds:
+        items:
+          type: string
+        type: array
+      sprintId:
+        type: string
+      taskIds:
+        items:
+          type: string
+        type: array
+    type: object
+  dtos.UserDto:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      password:
+        type: string
+      userRole:
+        type: string
+    type: object
+  models.Setting:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      updateAt:
+        type: integer
+      updateBy:
+        type: string
+      value:
+        type: string
+    type: object
+  models.Sprint:
+    properties:
+      description:
+        type: string
+      endTimestamp:
+        type: integer
+      id:
+        type: string
+      name:
+        type: string
+      startTimestamp:
+        type: integer
+    type: object
+  models.Task:
+    properties:
+      createAt:
+        type: integer
+      createdBy:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  models.Update:
+    properties:
+      blockByEmployeeIds:
+        items:
+          type: string
+        type: array
+      breakaway:
+        type: boolean
+      currentTaskIds:
+        items:
+          type: string
+        type: array
+      employee:
+        $ref: '#/definitions/models.User'
+      employeeId:
+        type: string
+      id:
+        type: string
+      previousCompletedTaskIds:
+        items:
+          type: string
+        type: array
+      sprintId:
+        type: string
+      taskIds:
+        items:
+          type: string
+        type: array
+      timestamp:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      email:
+        type: string
+      firstName:
+        type: string
+      hash:
+        type: string
+      id:
+        type: string
+      lastName:
+        type: string
+      userRole:
+        $ref: '#/definitions/models.UserRole'
+    type: object
+  models.UserRole:
+    enum:
+    - admin
+    - staff
+    type: string
+    x-enum-varnames:
+    - UserRole_Admin
+    - UserRole_Staff
+host: localhost:8080
+info:
+  contact:
+    email: chokey2nv@gmail.com
+    name: Agu Chijioke
+    url: https://github.com/chokey2nv
+  description: Create a backend API application for Gigmile Technologies' tech team
+    to replace verbal daily standups with written updates. The application should
+    allow employees to submit daily updates within a 15-minute window, view updates
+    from all team members, filter updates by week/day/sprint/owner, and include specific
+    information such as EmployeeID, Employee name, Date, Sprint ID, Task IDs, What
+    was done yesterday, What will be done today, Blocked by employee IDs, Breakaway,
+    Check-in time, and Status (before standup, after standup, within standup ) around
+    what time was this logged. The system should not allow deletion or updating of
+    updates.
+  title: Update (stand-up) API
+  version: "1"
+paths:
+  /api/v1/settings:
+    get:
+      description: Get a list of all settings
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of settings
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Response'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get all settings
+      tags:
+      - settings
+    post:
+      consumes:
+      - application/json
+      description: Create a new setting
+      parameters:
+      - description: Setting information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Setting'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Setting created successfully
+          schema:
+            $ref: '#/definitions/dtos.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Create an setting
+      tags:
+      - settings
+  /api/v1/sprints/get:
+    post:
+      description: Get a list of all sprints
+      parameters:
+      - description: User information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.GetSprintDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of sprints
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Response'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get all sprints
+      tags:
+      - sprints
+  /api/v1/sprints/new:
+    post:
+      consumes:
+      - application/json
+      description: Create a new sprint
+      parameters:
+      - description: Sprint information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Sprint'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sprint created successfully
+          schema:
+            $ref: '#/definitions/dtos.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Create an sprint
+      tags:
+      - sprints
+  /api/v1/tasks/get:
+    post:
+      description: Get a list of all tasks
+      parameters:
+      - description: User information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.GetTaskDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of tasks
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Response'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get all tasks
+      tags:
+      - tasks
+  /api/v1/tasks/new:
+    post:
+      consumes:
+      - application/json
+      description: Create a new task
+      parameters:
+      - description: Task information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Task created successfully
+          schema:
+            $ref: '#/definitions/dtos.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Create an task
+      tags:
+      - tasks
+  /api/v1/updates/get:
+    post:
+      description: Get a list of all updates
+      parameters:
+      - description: Update information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.GetUpdateDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of updates
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/models.Update'
+              type: array
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get all updates
+      tags:
+      - updates
+  /api/v1/updates/new:
+    post:
+      consumes:
+      - application/json
+      description: Create a new update
+      parameters:
+      - description: Update information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update created successfully
+          schema:
+            $ref: '#/definitions/dtos.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Create an update
+      tags:
+      - updates
+  /api/v1/users:
+    get:
+      description: Get a list of all users
+      parameters:
+      - description: Page information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.GetUserDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of users
+          schema:
+            items:
+              items:
+                $ref: '#/definitions/models.User'
+              type: array
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Get all users
+      tags:
+      - users
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login with username and password
+      parameters:
+      - description: User credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            type: string
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Login with username and password
+      tags:
+      - auth
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: Signup a new user
+      parameters:
+      - description: User information
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.SignUpDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User registered successfully
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.ErrorResponse'
+      summary: Signup a new user
+      tags:
+      - auth
+swagger: "2.0"
