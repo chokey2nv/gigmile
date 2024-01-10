@@ -15,7 +15,7 @@ import (
 // @Tags sprints
 // @Accept json
 // @Produce json
-// @Param input body models.Sprint true "Sprint information"
+// @Param input body dtos.SprintDto true "Sprint information"
 // @Success 200 {object} dtos.Response "Sprint created successfully"
 // @Failure 400 {object} dtos.ErrorResponse "Bad Request"
 // @Failure 500 {object} dtos.ErrorResponse "Internal Server Error"

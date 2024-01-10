@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/chokey2nv/gigmile/config"
@@ -51,11 +52,9 @@ func CreateUpdate(c *gin.Context) {
 // @Failure 500 {object} dtos.ErrorResponse "Internal Server Error"
 // @Router /api/v1/updates/get [post]
 func GetUpdates(c *gin.Context) {
-	var getUpdateDto dtos.GetUpdateDto
+	getUpdateDto := dtos.GetUpdateDto{}
 	if err := c.BindJSON(&getUpdateDto); err != nil {
-		config.Errorf(err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+		log.Println(err)
 	}
 	// Retrieve all updates from MongoDB
 	updateService := &services.UpdateService{

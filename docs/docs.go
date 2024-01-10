@@ -66,7 +66,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Setting"
+                            "$ref": "#/definitions/dtos.SettingDto"
                         }
                     }
                 ],
@@ -152,7 +152,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Sprint"
+                            "$ref": "#/definitions/dtos.SprintDto"
                         }
                     }
                 ],
@@ -238,7 +238,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Task"
+                            "$ref": "#/definitions/dtos.TaskDto"
                         }
                     }
                 ],
@@ -416,7 +416,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/dtos.LoginDto"
                         }
                     }
                 ],
@@ -520,8 +520,11 @@ const docTemplate = `{
                 "day": {
                     "type": "integer"
                 },
-                "employeeName": {
+                "employeeId": {
                     "description": "week/day/sprint/owner",
+                    "type": "string"
+                },
+                "employeeName": {
                     "type": "string"
                 },
                 "sprintName": {
@@ -560,6 +563,17 @@ const docTemplate = `{
                 }
             }
         },
+        "dtos.LoginDto": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.PageOption": {
             "type": "object",
             "properties": {
@@ -577,11 +591,53 @@ const docTemplate = `{
                 "data": {}
             }
         },
+        "dtos.SettingDto": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.SignUpDto": {
             "type": "object",
             "properties": {
                 "user": {
                     "$ref": "#/definitions/dtos.UserDto"
+                }
+            }
+        },
+        "dtos.SprintDto": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "endDate": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.TaskDto": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -617,6 +673,9 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
+                },
+                "week": {
+                    "type": "integer"
                 }
             }
         },
@@ -640,69 +699,6 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Setting": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "updateAt": {
-                    "type": "integer"
-                },
-                "updateBy": {
-                    "type": "string"
-                },
-                "value": {
-                    "type": "string"
-                }
-            }
-        },
-        "models.Sprint": {
-            "type": "object",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "endTimestamp": {
-                    "type": "integer"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "startTimestamp": {
-                    "type": "integer"
-                }
-            }
-        },
-        "models.Task": {
-            "type": "object",
-            "properties": {
-                "createAt": {
-                    "type": "integer"
-                },
-                "createdBy": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
         "models.Update": {
             "type": "object",
             "properties": {
@@ -715,11 +711,17 @@ const docTemplate = `{
                 "breakaway": {
                     "type": "boolean"
                 },
+                "createdAt": {
+                    "type": "string"
+                },
                 "currentTaskIds": {
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
+                },
+                "dayOfWeek": {
+                    "type": "integer"
                 },
                 "employee": {
                     "$ref": "#/definitions/models.User"
@@ -746,6 +748,9 @@ const docTemplate = `{
                     }
                 },
                 "timestamp": {
+                    "type": "integer"
+                },
+                "week": {
                     "type": "integer"
                 }
             }

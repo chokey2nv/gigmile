@@ -120,18 +120,18 @@ func (service *UpdateService) GetUpdates(
 			pipeline = append(pipeline, filterByWeek)
 		}
 		if filter.DayOfWeek != 0 {
-			filterByWeek := bson.D{{
+			filterByDayOfWeek := bson.D{{
 				Key: "$match", Value: bson.D{
 					{Key: "dayOfWeek", Value: filter.DayOfWeek},
 				}}}
-			pipeline = append(pipeline, filterByWeek)
+			pipeline = append(pipeline, filterByDayOfWeek)
 		}
 		if filter.SprintName != "" {
-			filterByWeek := bson.D{{
+			filterBySprintName := bson.D{{
 				Key:   "$match",
 				Value: bson.D{{Key: "sprint.name", Value: bson.D{{Key: "$regex", Value: filter.SprintName}, {Key: "$options", Value: "i"}}}},
 			}}
-			pipeline = append(pipeline, filterByWeek)
+			pipeline = append(pipeline, filterBySprintName)
 		}
 	}
 	cursor, err := collection.Aggregate(c, pipeline)
@@ -165,12 +165,10 @@ func (service *UpdateService) GetUpdates(
 	var updates []*dtos.UpdateResponseDto
 	for cursor.Next(c) {
 		var update models.Update
-		var a interface{}
 		if err := cursor.Decode(&update); err != nil {
 			Errorf(err)
 			continue
 		}
-		Errorf(a)
 		date := time.UnixMilli(update.Timestamp)
 		checkedInTime := date.Format("15:04")
 		checkedInTimeInt, err := strconv.ParseInt(strings.Join(strings.Split(checkedInTime, ":"), ""), 10, 64)
@@ -197,6 +195,7 @@ func (service *UpdateService) GetUpdates(
 			Breakaway:                update.Breakaway,
 			CheckedInTime:            checkedInTime,
 			Employee: &dtos.UpdateUserResponseDto{
+				Id:        update.Employee.Id,
 				LastName:  update.Employee.LastName,
 				FirstName: update.Employee.FirstName,
 				Email:     update.Employee.Email,

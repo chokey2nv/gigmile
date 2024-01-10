@@ -27,8 +27,10 @@ definitions:
         type: string
       day:
         type: integer
-      employeeName:
+      employeeId:
         description: week/day/sprint/owner
+        type: string
+      employeeName:
         type: string
       sprintName:
         type: string
@@ -53,6 +55,13 @@ definitions:
       userRole:
         type: string
     type: object
+  dtos.LoginDto:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   dtos.PageOption:
     properties:
       limit:
@@ -64,10 +73,37 @@ definitions:
     properties:
       data: {}
     type: object
+  dtos.SettingDto:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      value:
+        type: string
+    type: object
   dtos.SignUpDto:
     properties:
       user:
         $ref: '#/definitions/dtos.UserDto'
+    type: object
+  dtos.SprintDto:
+    properties:
+      description:
+        type: string
+      endDate:
+        type: string
+      name:
+        type: string
+      startDate:
+        type: string
+    type: object
+  dtos.TaskDto:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
     type: object
   dtos.UpdateDto:
     properties:
@@ -91,6 +127,8 @@ definitions:
         items:
           type: string
         type: array
+      week:
+        type: integer
     type: object
   dtos.UserDto:
     properties:
@@ -105,47 +143,6 @@ definitions:
       userRole:
         type: string
     type: object
-  models.Setting:
-    properties:
-      description:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      updateAt:
-        type: integer
-      updateBy:
-        type: string
-      value:
-        type: string
-    type: object
-  models.Sprint:
-    properties:
-      description:
-        type: string
-      endTimestamp:
-        type: integer
-      id:
-        type: string
-      name:
-        type: string
-      startTimestamp:
-        type: integer
-    type: object
-  models.Task:
-    properties:
-      createAt:
-        type: integer
-      createdBy:
-        type: string
-      description:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-    type: object
   models.Update:
     properties:
       blockByEmployeeIds:
@@ -154,10 +151,14 @@ definitions:
         type: array
       breakaway:
         type: boolean
+      createdAt:
+        type: string
       currentTaskIds:
         items:
           type: string
         type: array
+      dayOfWeek:
+        type: integer
       employee:
         $ref: '#/definitions/models.User'
       employeeId:
@@ -175,6 +176,8 @@ definitions:
           type: string
         type: array
       timestamp:
+        type: integer
+      week:
         type: integer
     type: object
   models.User:
@@ -247,7 +250,7 @@ paths:
         name: input
         required: true
         schema:
-          $ref: '#/definitions/models.Setting'
+          $ref: '#/definitions/dtos.SettingDto'
       produces:
       - application/json
       responses:
@@ -303,7 +306,7 @@ paths:
         name: input
         required: true
         schema:
-          $ref: '#/definitions/models.Sprint'
+          $ref: '#/definitions/dtos.SprintDto'
       produces:
       - application/json
       responses:
@@ -359,7 +362,7 @@ paths:
         name: input
         required: true
         schema:
-          $ref: '#/definitions/models.Task'
+          $ref: '#/definitions/dtos.TaskDto'
       produces:
       - application/json
       responses:
@@ -475,7 +478,7 @@ paths:
         name: input
         required: true
         schema:
-          $ref: '#/definitions/models.User'
+          $ref: '#/definitions/dtos.LoginDto'
       produces:
       - application/json
       responses:

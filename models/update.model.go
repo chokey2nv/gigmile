@@ -17,5 +17,5 @@ type Update struct {
 	BlockedByEmployeeIDs     []string           `json:"blockByEmployeeIds" bson:"blockByEmployeeIds"`
 	Breakaway                bool               `json:"breakaway" bson:"Breakaway"`
 	Employee                 *User              `json:"employee" bson:"employee"`
-	CreateAt                 primitive.DateTime `json:"createdAt" bson:"createdAt"`
+	CreateAt                 primitive.DateTime `json:"createdAt" bson:"createdAt" swaggertype:"string"`
 }

@@ -8,7 +8,9 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - gigmileNetwork
+      - gigmile
+    environment:
+      - MONGO_DB_URI=mongodb://root:root_pass@mongodb:27017
 
   mongodb:
     image: mongo
@@ -17,7 +19,7 @@ services:
     ports:
       - "27018:27017"
     networks:
-      - gigmileNetwork
+      - gigmile
     volumes:
       - ./mongo-data:/data/db
     environment:
@@ -25,7 +27,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=root_pass
 
 networks:
-  gigmileNetwork:
+  gigmile:
 
 volumes:
   mongo-data:

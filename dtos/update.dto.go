@@ -6,6 +6,7 @@ import (
 )
 
 type UpdateUserResponseDto struct {
+	Id        string          `json:"id"`
 	LastName  string          `json:"lastName"`
 	FirstName string          `json:"firstName"`
 	UserRole  models.UserRole `json:"userRole"`
@@ -26,7 +27,7 @@ type UpdateResponseDto struct {
 	Breakaway                bool                   `json:"breakaway"`
 	CheckedInTime            string                 `json:"checkedInTime"`
 	Status                   string                 `json:"status"`
-	CreateAt                 primitive.DateTime     `json:"createdAt"`
+	CreateAt                 primitive.DateTime     `json:"createdAt" swaggertype:"primitive.DateTime" format:"string"`
 }
 type UpdateDto struct {
 	SprintID                 string   `json:"sprintId"`
@@ -42,7 +43,7 @@ type GetUPdateFilterDto struct {
 	EmployeeID   string `json:"employeeId"`
 	EmployeeName string `json:"employeeName"`
 	Week         int64  `json:"week"`
-	DayOfWeek    int64  `json:"day"`
+	DayOfWeek    int64  `json:"dayOfWeek"`
 	Date         string `json:"date"`
 	SprintName   string `json:"sprintName"`
 }

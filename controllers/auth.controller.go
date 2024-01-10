@@ -123,6 +123,9 @@ func Signup(c *gin.Context) {
 		})
 		return
 	}
+	userResponseDto := dtos.UpdateUserResponseDto{}
+	config.ToJSONStruct(user, &userResponseDto)
+
 	token, err := GenerateToken(user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, &dtos.ErrorResponse{
@@ -131,7 +134,7 @@ func Signup(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, dtos.Response{Data: gin.H{"user": user, "access_token": token}})
+	c.JSON(http.StatusOK, dtos.Response{Data: gin.H{"user": userResponseDto, "access_token": token}})
 }
 
 // @Summary Login with username and password
@@ -139,7 +142,7 @@ func Signup(c *gin.Context) {
 // @Tags auth
 // @Accept json
 // @Produce json
-// @Param input body models.User true "User credentials"
+// @Param input body dtos.LoginDto true "User credentials"
 // @Success 200 {string} string "Login successful"
 // @Failure 401 {object} dtos.ErrorResponse "Unauthorized"
 // @Router /login [post]

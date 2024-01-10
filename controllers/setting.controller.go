@@ -15,7 +15,7 @@ import (
 // @Tags settings
 // @Accept json
 // @Produce json
-// @Param input body models.Setting true "Setting information"
+// @Param input body dtos.SettingDto true "Setting information"
 // @Success 200 {object} dtos.Response "Setting created successfully"
 // @Failure 400 {object} dtos.ErrorResponse "Bad Request"
 // @Failure 500 {object} dtos.ErrorResponse "Internal Server Error"

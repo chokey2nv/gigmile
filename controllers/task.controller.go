@@ -15,7 +15,7 @@ import (
 // @Tags tasks
 // @Accept json
 // @Produce json
-// @Param input body models.Task true "Task information"
+// @Param input body dtos.TaskDto true "Task information"
 // @Success 200 {object} dtos.Response "Task created successfully"
 // @Failure 400 {object} dtos.ErrorResponse "Bad Request"
 // @Failure 500 {object} dtos.ErrorResponse "Internal Server Error"
